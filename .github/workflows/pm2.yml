@@ -8,7 +8,7 @@ jobs:
   track_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Get project data
+      - name: Get Organization Project Data
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PM_SECRET }}
           PROJECT_NUMBER: 1
@@ -21,3 +21,69 @@ jobs:
                 }
               }
           }'
+      
+      - name: Finding Information About Items in a Project
+        
+        run: |
+          gh api graphql -f query='
+            query{
+              node(id: "PVT_kwDOBvPcNM4AHm4o") {
+                  ... on ProjectV2 {
+                    items(first: 20) {
+                      nodes{
+                        id
+                        fieldValues(first: 8) {
+                          nodes{                
+                            ... on ProjectV2ItemFieldTextValue {
+                              text
+                              field {
+                                ... on ProjectV2FieldCommon {
+                                  name
+                                }
+                              }
+                            }
+                            ... on ProjectV2ItemFieldDateValue {
+                              date
+                              field {
+                                ... on ProjectV2FieldCommon {
+                                  name
+                                }
+                              }
+                            }
+                            ... on ProjectV2ItemFieldSingleSelectValue {
+                              name
+                              field {
+                                ... on ProjectV2FieldCommon {
+                                  name
+                                }
+                              }
+                            }
+                          }              
+                        }
+                        content{              
+                          ... on DraftIssue {
+                            title
+                            body
+                          }
+                          ... on Issue {
+                            title
+                            assignees(first: 10) {
+                              nodes{
+                                login
+                              }
+                            }
+                          }
+                          ... on PullRequest {
+                            title
+                            assignees(first: 10) {
+                              nodes{
+                                login
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }'
