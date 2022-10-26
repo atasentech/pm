@@ -1,15 +1,15 @@
-name: Move assigned pull requests into To do
+# name: Move opened issues into To do
 
-on:
-  issues:
-    types: [assigned]
+# on:
+#   issues:
+#     types: [assigned]
 
-jobs:
-  automate-project-columns:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: alex-page/github-project-automation-plus@v0.8.1
-        with:
-          project: PM
-          column: Done
-          repo-token: ${{ secrets.GHPROJECT_TOKEN }}
+# jobs:
+#   automate-project-columns:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: alex-page/github-project-automation-plus@v0.8.1
+#         with:
+#           project: PM
+#           column: Done
+#           repo-token: ${{ secrets.GHPROJECT_TOKEN }}
