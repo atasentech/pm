@@ -17,7 +17,7 @@ jobs:
           gh api graphql -f query='
             query{
               organization(login: "ORGANIZATION"){
-                projectV2(number: PROJECT_NUMBER) {
+                projectV2(number: ${{ env.PROJECT_NUMBER }}) {
                   id
                 }
               }
