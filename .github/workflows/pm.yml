@@ -16,4 +16,4 @@ jobs:
         with:
           project: Deneme
           column: Todo
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.MY_PM_SECRET }}
