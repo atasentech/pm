@@ -22,6 +22,46 @@ jobs:
               }
           }'
       
+      - name: Finding the Node ID of a Field
+        env:
+          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+          PROJECT_ID: PVT_kwDOBvPcNM4AHpFn
+          ISSUE_ID: PVTI_lADOBvPcNM4AHpFnzgDHwv4
+        run: |
+          gh api graphql -f query='
+            query{
+            node(id: "PROJECT_ID") {
+              ... on ProjectV2 {
+                fields(first: 20) {
+                  nodes {
+                    ... on ProjectV2Field {
+                      id
+                      name
+                    }
+                    ... on ProjectV2IterationField {
+                      id
+                      name
+                      configuration {
+                        iterations {
+                          startDate
+                          id
+                        }
+                      }
+                    }
+                    ... on ProjectV2SingleSelectField {
+                      id
+                      name
+                      options {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }'
+
       - name: Finding Information About Items in a Project
         env:
           GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
@@ -90,6 +130,14 @@ jobs:
                 }
               }'
 
+
+      # BUNU BİR İSSUE OLUŞTURULDUĞUNDA DİREKT BLOCKCHAIN 
+      # PROJESİNİN BOARD UNA EKLEMEK İÇİN KULLANABİLİRİZ.
+      # ÖNCEKİ STEPLERDEN PROJECT_ID Yİ VE BU WORKFLOW U
+      # TETİKLEYEN İSSUE NUN İD SİNİ YAKALAMAM LAZIM.
+      # ŞU HALİYLE DİREKT NO STATUS SATIRINA EKLEME YAPIYOR
+      # CONTENT ID OLARAK PR ID Sİ DE VEREBİLİRİZ. ONU DA
+      # EKLEYEBİLİYOR.
       - name: Adding an Item (İSSUE) to a Project
         env:
           GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
@@ -101,7 +149,6 @@ jobs:
               addProjectV2ItemById(input: {projectId: "PVT_kwDOBvPcNM4AHpFn" contentId: "I_kwDOIT5OeM5U3h7_" }) {
                 item {
                   id
-                  status
                 }
               }
             }'
