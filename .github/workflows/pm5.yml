@@ -12,6 +12,8 @@ jobs:
   assign_one_project:
     runs-on: ubuntu-latest
     name: Assign to One Project
+    env:
+      GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
     steps:
     - name: Get issue list
       run: |
