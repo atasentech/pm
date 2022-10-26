@@ -1,0 +1,40 @@
+name: "PM"
+on:
+  issues:
+    types:
+      - opened
+      - assigned
+
+jobs:
+  label_issue:
+    name: Label an Issue
+    runs-on: ubuntu-latest
+    environment: PM
+    steps:
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+        run: |
+          gh issue edit $ISSUE_URL --add-label "enhancement"
+
+  move-assigned-card:
+    name: Move Assigned Card
+    runs-on: ubuntu-latest
+    environment: PM
+    steps:
+      - uses: alex-page/github-project-automation-plus@5bcba1c1c091a222584d10913e5c060d32c44044
+        with:
+          project: Backlog
+          column: Todo
+          repo-token: ${{ secrets.MY_PM_SECRET }}
+
+  automate-project-columns:
+    name: Automate STH
+    runs-on: ubuntu-latest
+    environment: PM
+    steps:
+      - uses: alex-page/github-project-automation-plus@v0.8.1
+        with:
+          project: Backlog
+          column: Todo
+          repo-token: ${{ secrets.MY_PM_SECRET }}
