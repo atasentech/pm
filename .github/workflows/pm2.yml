@@ -11,12 +11,11 @@ jobs:
       - name: Get project data
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PM_SECRET }}
-          ORGANIZATION: atasentech
           PROJECT_NUMBER: 1
         run: |
           gh api graphql -f query='
             query{
-              organization(login: "ORGANIZATION"){
+              organization(login: "atasentech"){
                 projectV2(number: ${{ env.PROJECT_NUMBER }}) {
                   id
                 }
