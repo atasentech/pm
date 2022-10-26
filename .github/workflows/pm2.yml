@@ -23,7 +23,8 @@ jobs:
           }'
       
       - name: Finding Information About Items in a Project
-        
+        env:
+          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='
             query{
