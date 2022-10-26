@@ -101,6 +101,7 @@ jobs:
               addProjectV2ItemById(input: {projectId: "PVT_kwDOBvPcNM4AHpFn" contentId: "I_kwDOIT5OeM5U3h7_" }) {
                 item {
                   id
+                  status
                 }
               }
             }'
