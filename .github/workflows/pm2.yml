@@ -3,7 +3,7 @@ on:
   pull_request:
     types:
       - ready_for_review
-  issue: 
+  issues: 
     types: 
       - opened
 jobs:
