@@ -11,45 +11,49 @@ jobs:
   track_pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Get project data
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_PM_SECRET }}
-          ORGANIZATION: atasentech
-          PROJECT_NUMBER: 2
+      - name: Get the node id of the project
         run: |
-            gh api graphql -f query='
-              query{
-              node(id: "2") {
-                ... on ProjectV2 {
-                  fields(first: 20) {
-                    nodes {
-                      ... on ProjectV2Field {
-                        id
-                        name
-                      }
-                      ... on ProjectV2IterationField {
-                        id
-                        name
-                        configuration {
-                          iterations {
-                            startDate
-                            id
-                          }
-                        }
-                      }
-                      ... on ProjectV2SingleSelectField {
-                        id
-                        name
-                        options {
-                          id
-                          name
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }'
+          curl -i -u USERNAME:atasen19 https://api.github.com/user
+
+      # - name: Get project data
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.MY_PM_SECRET }}
+      #     ORGANIZATION: atasentech
+      #     PROJECT_NUMBER: 2
+      #   run: |
+      #       gh api graphql -f query='
+      #         query{
+      #         node(id: "2") {
+      #           ... on ProjectV2 {
+      #             fields(first: 20) {
+      #               nodes {
+      #                 ... on ProjectV2Field {
+      #                   id
+      #                   name
+      #                 }
+      #                 ... on ProjectV2IterationField {
+      #                   id
+      #                   name
+      #                   configuration {
+      #                     iterations {
+      #                       startDate
+      #                       id
+      #                     }
+      #                   }
+      #                 }
+      #                 ... on ProjectV2SingleSelectField {
+      #                   id
+      #                   name
+      #                   options {
+      #                     id
+      #                     name
+      #                   }
+      #                 }
+      #               }
+      #             }
+      #           }
+      #         }
+      #       }'
 
           # gh api graphql -f query='
           #   query($org: String!, $number: Int!) {
