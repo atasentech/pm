@@ -28,7 +28,7 @@ jobs:
         run: |
           gh api graphql -f query='
             query{
-              node(id: "PVT_kwDOBvPcNM4AHm4o") {
+              node(id: "PVT_kwDOBvPcNM4AHpFn") {
                   ... on ProjectV2 {
                     items(first: 20) {
                       nodes{
