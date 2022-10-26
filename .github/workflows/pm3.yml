@@ -16,4 +16,4 @@ jobs:
           github-token: ${{ secrets.MY_PM_SECRET }}
           labeled: bug, needs-triage
           label-operator: NOT
-          reviewers: atasen19
+          label: Todo
