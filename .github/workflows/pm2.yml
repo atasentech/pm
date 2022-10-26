@@ -67,6 +67,7 @@ jobs:
                             body
                           }
                           ... on Issue {
+                            id
                             title
                             assignees(first: 10) {
                               nodes{
