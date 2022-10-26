@@ -12,4 +12,4 @@ jobs:
         with:
           project: PM
           column: Todo
-          repo-token: ${{ secrets.MY_FG_PM_SECRET }}
+          repo-token: ${{ secrets.GH_PROJECT_TOKEN }}
