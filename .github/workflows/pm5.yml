@@ -1,0 +1,20 @@
+name: Auto Assign to Project(s)
+
+on:
+  issues:
+    types: [opened, labeled, assigned]
+  issue_comment:
+    types: [created]
+env:
+  MY_GITHUB_TOKEN: ${{ secrets.MY_PM_SECRET }}
+
+jobs:
+  assign_one_project:
+    runs-on: ubuntu-latest
+    name: Assign to One Project
+    steps:
+    - name: Get issue list
+      run: |
+        gh issue create --title "I found a bug" --body "Nothing works"
+        gh issue create --label "bug,help wanted"
+        gh issue create --project "PM"
