@@ -30,7 +30,7 @@ jobs:
         run: |
           gh api graphql -f query='
             query{
-            node(id: ${{ env.PROJECT_ID }} ) {
+            node(id: PVT_kwDOBvPcNM4AHpFn) {
               ... on ProjectV2 {
                 fields(first: 20) {
                   nodes {
