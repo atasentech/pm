@@ -15,4 +15,4 @@ jobs:
         with:
           project: PM
           column: Todo
-          repo-token: ${{ secrets.MY_PM_SECRET }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
