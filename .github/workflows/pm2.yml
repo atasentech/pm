@@ -92,8 +92,8 @@ jobs:
       - name: Adding an Item (İSSUE) to a Project
         env:
           GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
-          PROJECT_ID: "PVT_kwDOBvPcNM4AHpFn"
-          ISSUE_ID: "PVTI_lADOBvPcNM4AHpFnzgDHwv4"
+          PROJECT_ID: PVT_kwDOBvPcNM4AHpFn
+          ISSUE_ID: PVTI_lADOBvPcNM4AHpFnzgDHwv4
         run: |
           gh api graphql -f query='
             mutation {
