@@ -97,7 +97,7 @@ jobs:
         run: |
           gh api graphql -f query='
             mutation {
-              addProjectV2ItemById(input: {projectId: ${{ env.PROJECT_ID }} contentId: ${{ env.ISSUE_ID }} }) {
+              addProjectV2ItemById(input: {projectId: "PVT_kwDOBvPcNM4AHpFn" contentId: ${{ env.ISSUE_ID }} }) {
                 item {
                   id
                 }
