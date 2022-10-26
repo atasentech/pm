@@ -15,5 +15,5 @@ jobs:
       - uses: alex-page/github-project-automation-plus@v0.8.1
         with:
           project: Deneme
-          column: Triage
+          column: Todo
           repo-token: ${{ secrets.MY_PM_SECRET }}
