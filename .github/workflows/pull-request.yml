@@ -54,6 +54,8 @@ jobs:
       
       - name: Get all Branches for Issue
         id: branches
+        env:
+          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='query FindBranches{
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
