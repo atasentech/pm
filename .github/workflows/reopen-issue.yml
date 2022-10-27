@@ -10,24 +10,26 @@ env:
     REPO: pm ## The name of the repository your issues, branches and project are on
     COLUMN_NAME: Todo ## The name of the project column you want to move the issue to
 
-jobs:
+jjobs:
   Check-Branch-Name:
     runs-on: ubuntu-latest
     outputs:
       issue_num: ${{ steps.step1.outputs.issue_num }}
       tracked: ${{ steps.step1.outputs.tracked }}
-    id: step1
-    run: |
-      branch_name=`echo '${{ github.event.ref }}'`
-      num=${branch_name#*#}
-      issue_num=`echo $num | egrep -o '^[^/]+'`
-      re='^[0-9]+$'
-      if ! [[ $issue_num =~ $re ]] ; then
-        echo "::set-output name=tracked::false"
-      else
-        echo "::set-output name=tracked::true"
-      fi
-        echo "::set-output name=issue_num::$issue_num"
+    steps:
+      - name: Get Created Issue Number
+        id: step1
+        run: |
+          branch_name=`echo '${{ github.event.ref }}'`
+          num=${branch_name#*#}
+          issue_num=`echo $num | egrep -o '^[^/]+'`
+          re='^[0-9]+$'
+          if ! [[ $issue_num =~ $re ]] ; then
+            echo "::set-output name=tracked::false"
+          else
+            echo "::set-output name=tracked::true"
+          fi
+            echo "::set-output name=issue_num::$issue_num"
           
   Branch-Is-Not-Tracked:
     needs: Check-Branch-Name
@@ -45,7 +47,7 @@ jobs:
       ISSUE_NUM: ${{ needs.Check-Branch-Name.outputs.issue_num}}
     runs-on: ubuntu-latest
     steps:     
-      - name: Get Issue ${{ env.ISSUE_NUM }} # Project Item ID
+      - name: Get Issue ${{ env.ISSUE_NUM }} Project Item ID
         run: |
           gh api graphql -f query='query FindIssueID {
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
@@ -115,8 +117,8 @@ jobs:
             mutation {
               reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
               issue {
-                      id
-                     title
+                  id
+                  title
                 }
               }
             }'
