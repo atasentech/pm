@@ -13,6 +13,9 @@ env:
 jobs:
   Check-Branch-Name:
     runs-on: ubuntu-latest
+    outputs:
+      issue_num: ${{ steps.step1.outputs.issue_num }}
+      tracked: ${{ steps.step1.outputs.tracked }}
     id: step1
     run: |
       branch_name=`echo '${{ github.event.ref }}'`
