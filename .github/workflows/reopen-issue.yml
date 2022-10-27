@@ -70,27 +70,28 @@ jobs:
       - name: Get Project Status Item ID
         run: |
           gh api graphql -f query='query{
-          organization(login: "${{ env.ORGANIZATION }}"){
-              projectV2(number: ${{ env.PROJECT_NUMBER }}) {
-                  id
-                  fields(first:20) {
-                    nodes {
-                      ... on ProjectV2SingleSelectField {
-                        id
-                        name
-                        options {
+            organization(login: "${{ env.ORGANIZATION }}"){
+                projectV2(number: ${{ env.PROJECT_NUMBER }}) {
+                    id
+                    fields(first:20) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
                           id
                           name
+                          options {
+                            id
+                            name
+                          }
                         }
                       }
                     }
                   }
                 }
-              }
-            }' > project_data.json
-          echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
-          echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'COLUMN_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{ env.COLUMN_NAME }}") |.id' project_data.json) >> $GITHUB_ENV
+              }' > project_data.json
+              echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
+              echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
+              echo 'COLUMN_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{ env.COLUMN_NAME }}") |.id' project_data.json) >> $GITHUB_ENV
+      
       - name: Move Issue Number ${{ env.ISSUE_NUM }} Into In Progress
         run: |
           gh api graphql -f query='
@@ -114,7 +115,7 @@ jobs:
       - name: Reopen Issue
         if: ${{ env.ISSUE_STATE }} == 'CLOSED'
         run: |
-         gh api graphql -f query='
+          gh api graphql -f query='
             mutation {
               reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
               issue {
