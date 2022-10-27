@@ -52,20 +52,20 @@ jobs:
         run: |
           gh api graphql -f query='query FindIssueID {
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
-                issue(number:${{ env.ISSUE_NUM }}) {
-                      id,
-                      state,
-                      projectItems(first: 1){
-                        nodes{ 
-                          id
-                          }
-                        },
-                      }
+              issue(number:${{ env.ISSUE_NUM }}) {
+                    id,
+                    state,
+                    projectItems(first: 1){
+                      nodes{ 
+                        id
+                        }
+                      },
                     }
-                  }' > project_data.json
-                  echo 'ISSUE_ID='$(jq '.data.repository.issue.id' project_data.json) >> $GITHUB_ENV
-                  echo 'ISSUE_PROJECT_ID='$(jq '.data.repository.issue.projectItems.nodes[0].id' project_data.json) >> $GITHUB_ENV
-                  echo 'ISSUE_STATE='$(jq '.data.repository.issue.state' project_data.json) >> $GITHUB_ENV
+                  }
+                }' > project_data.json
+                echo 'ISSUE_ID='$(jq '.data.repository.issue.id' project_data.json) >> $GITHUB_ENV
+                echo 'ISSUE_PROJECT_ID='$(jq '.data.repository.issue.projectItems.nodes[0].id' project_data.json) >> $GITHUB_ENV
+                echo 'ISSUE_STATE='$(jq '.data.repository.issue.state' project_data.json) >> $GITHUB_ENV
                       
       - name: Get Project Status Item ID
         run: |
