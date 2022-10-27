@@ -39,6 +39,7 @@ jobs:
     steps:
       - name: Get Issue ${{ env.ISSUE_NUM }} ID and State
         run: |
+          echo "${{ env.ISSUE_NUM }}"
           gh api graphql -f query='query FindIssueID {
             repository(owner:"${{ env.ORGANIZATION }}",name:"${{ env.REPO }}") {
                 issue(number:${{ env.ISSUE_NUM }}) {
