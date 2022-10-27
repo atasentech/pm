@@ -10,7 +10,7 @@ env:
     REPO: pm ## The name of the repository your issues, branches and project are on
     COLUMN_NAME: Todo ## The name of the project column you want to move the issue to
 
-jjobs:
+jobs:
   Check-Branch-Name:
     runs-on: ubuntu-latest
     outputs:
