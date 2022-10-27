@@ -98,12 +98,12 @@ jobs:
             mutation {
               updateProjectV2ItemFieldValue(
                 input: {
-                      projectId: ${{ env.PROJECT_ID }}
-                      itemId: ${{ env.ISSUE_PROJECT_ID }}
-                      fieldId: ${{ env.STATUS_FIELD_ID }}
-                      value: { 
-                          singleSelectOptionId: ${{ env.COLUMN_OPTION_ID }}
-                      }
+                  projectId: ${{ env.PROJECT_ID }}
+                  itemId: ${{ env.ISSUE_PROJECT_ID }}
+                  fieldId: ${{ env.STATUS_FIELD_ID }}
+                  value: { 
+                    singleSelectOptionId: ${{ env.COLUMN_OPTION_ID }}
+                  }
                 }
                 ) {
                 projectV2Item {
@@ -118,7 +118,7 @@ jobs:
           gh api graphql -f query='
               mutation {
                 reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
-                issue {
+                  issue {
                         id
                        title
                   }
