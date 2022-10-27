@@ -1,4 +1,3 @@
-
 name: New Branch Created 
 
 on:
@@ -10,27 +9,22 @@ env:
     PROJECT_NUMBER: 2 ## Your project (beta) number. You can find it in the project's URL.
     REPO: pm ## The name of the repository your issues, branches and project are on
     COLUMN_NAME: Todo ## The name of the project column you want to move the issue to
-    
+
 jobs:
   Check-Branch-Name:
     runs-on: ubuntu-latest
-    outputs:
-      issue_num: ${{ steps.step1.outputs.issue_num }}
-      tracked: ${{ steps.step1.outputs.tracked }}
-    steps:
-      - name: Get Created Issue Number
-        id: step1
-        run: |
-          branch_name=`echo '${{ github.event.ref }}'`
-          num=${branch_name#*#}
-          issue_num=`echo $num | egrep -o '^[^/]+'`
-          re='^[0-9]+$'
-          if ! [[ $issue_num =~ $re ]] ; then
-            echo "::set-output name=tracked::false"
-          else
-            echo "::set-output name=tracked::true"
-          fi
-          echo "::set-output name=issue_num::$issue_num"
+    id: step1
+    run: |
+      branch_name=`echo '${{ github.event.ref }}'`
+      num=${branch_name#*#}
+      issue_num=`echo $num | egrep -o '^[^/]+'`
+      re='^[0-9]+$'
+      if ! [[ $issue_num =~ $re ]] ; then
+        echo "::set-output name=tracked::false"
+      else
+        echo "::set-output name=tracked::true"
+      fi
+        echo "::set-output name=issue_num::$issue_num"
           
   Branch-Is-Not-Tracked:
     needs: Check-Branch-Name
@@ -70,40 +64,39 @@ jobs:
       - name: Get Project Status Item ID
         run: |
           gh api graphql -f query='query{
-            organization(login: "${{ env.ORGANIZATION }}"){
-                projectV2(number: ${{ env.PROJECT_NUMBER }}) {
-                    id
-                    fields(first:20) {
-                      nodes {
-                        ... on ProjectV2SingleSelectField {
+          organization(login: "${{ env.ORGANIZATION }}"){
+              projectV2(number: ${{ env.PROJECT_NUMBER }}) {
+                  id
+                  fields(first:20) {
+                    nodes {
+                      ... on ProjectV2SingleSelectField {
+                        id
+                        name
+                        options {
                           id
                           name
-                          options {
-                            id
-                            name
-                          }
                         }
                       }
                     }
                   }
                 }
-              }' > project_data.json
-              echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
-              echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
-              echo 'COLUMN_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{ env.COLUMN_NAME }}") |.id' project_data.json) >> $GITHUB_ENV
-      
+              }
+            }' > project_data.json
+          echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
+          echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'COLUMN_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{ env.COLUMN_NAME }}") |.id' project_data.json) >> $GITHUB_ENV
       - name: Move Issue Number ${{ env.ISSUE_NUM }} Into In Progress
         run: |
           gh api graphql -f query='
             mutation {
               updateProjectV2ItemFieldValue(
                 input: {
-                  projectId: ${{ env.PROJECT_ID }}
-                  itemId: ${{ env.ISSUE_PROJECT_ID }}
-                  fieldId: ${{ env.STATUS_FIELD_ID }}
-                  value: { 
-                    singleSelectOptionId: ${{ env.COLUMN_OPTION_ID }}
-                  }
+                      projectId: ${{ env.PROJECT_ID }}
+                      itemId: ${{ env.ISSUE_PROJECT_ID }}
+                      fieldId: ${{ env.STATUS_FIELD_ID }}
+                      value: { 
+                          singleSelectOptionId: ${{ env.COLUMN_OPTION_ID }}
+                      }
                 }
                 ) {
                 projectV2Item {
@@ -115,12 +108,12 @@ jobs:
       - name: Reopen Issue
         if: ${{ env.ISSUE_STATE }} == 'CLOSED'
         run: |
-          gh api graphql -f query='
-              mutation {
-                reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
-                  issue {
-                        id
-                       title
-                  }
+         gh api graphql -f query='
+            mutation {
+              reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
+              issue {
+                      id
+                     title
                 }
-              }'
+              }
+            }'
