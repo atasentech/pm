@@ -119,24 +119,24 @@ jobs:
           GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='query{
-          organization(login: "${{ env.ORGANIZATION }}"){
+            organization(login: "${{ env.ORGANIZATION }}"){
               projectV2(number: ${{ env.PROJECT_NUMBER }}) {
-                  id
-                  fields(first:20) {
-                    nodes {
-                      ... on ProjectV2SingleSelectField {
+                id
+                fields(first:20) {
+                  nodes {
+                    ... on ProjectV2SingleSelectField {
+                      id
+                      name
+                      options {
                         id
                         name
-                        options {
-                          id
-                          name
-                        }
                       }
                     }
                   }
                 }
               }
-            }' > project_data.json
+            }
+          }' > project_data.json
           echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
           echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
           echo 'NEW_STATUS_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{env.ISSUE_PROJECT_STATUS}}" ) |.id' project_data.json) >> $GITHUB_ENV
