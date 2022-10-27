@@ -1,0 +1,69 @@
+# reopen an issue by a branch being created for it
+name: New Branch Created 
+
+on:
+  create
+
+env:
+    GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+    ORGANIZATION: atasentech
+    REPO: pm   
+# İLK ÖNCE İSSUE NUMBER I ONU İÇEREN BRANCH İN ADINDAN ALIYORUZ
+# Branch adının başında bir sayı yoksa workflow un devam etmemesi için bir check yapıyoruz
+jobs:
+  Check-Branch-Name:
+    runs-on: ubuntu-latest
+    outputs:
+      issue_num: ${{ steps.step1.outputs.issue_num }}
+      tracked: ${{ steps.step1.outputs.tracked }}
+    steps:
+      - name: Get Created Issue Number
+        id: step1
+        run: |
+          branch_name=`echo '${{ github.event.ref }}'`
+          issue_num=`echo ${branch_name#*#} | egrep -o '^[^/]+'`
+          re='^[0-9]+$'
+          if ! [[ $issue_num =~ $re ]] ; then
+            echo "::set-output name=tracked::false"
+          else
+            echo "::set-output name=tracked::true"
+          fi
+          echo "::set-output name=issue_num::$issue_num"
+
+  Add-Linked-Issue-To-Project:
+    needs: Check-Branch-Name # previous job
+    if: needs.Check-Branch-Name.outputs.tracked == 'true'
+    env: 
+      ISSUE_NUM: ${{ needs.Check-Branch-Name.outputs.issue_num}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Issue ${{ env.ISSUE_NUM }} ID and State
+        run: |
+          gh api graphql -f query='query FindIssueID {
+            repository(owner:"${{ env.ORGANIZATION }}",name:"${{ env.REPO }}") {
+                issue(number:${{ env.ISSUE_NUM }}) {
+                      id
+                      state
+                      }
+                    }
+                  }' > project_data.json
+                  echo 'ISSUE_ID='
+                   $(jq '.data.repository.issue.id' project_data.json)
+                     >> $GITHUB_ENV
+                  echo 'ISSUE_STATE='
+                   $(jq '.data.repository.issue.state' project_data.json) 
+                     >> $GITHUB_ENV
+      
+      - name: Reopen Issue
+        if: ${{ env.ISSUE_STATE }} == 'CLOSED'
+        run: |
+         gh api graphql -f query='
+            mutation {
+              reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
+              issue {
+                     title
+                     state
+                }
+              }
+            }'
+
