@@ -48,7 +48,7 @@ jobs:
                       }
                     }
                   }' > project_data.json
-                  echo 'ISSUE_ID='
+                  echo 'ISSUE_NUM='
                    $(jq '.data.repository.issue.id' project_data.json)
                      >> $GITHUB_ENV
                   echo 'ISSUE_STATE='
@@ -60,7 +60,7 @@ jobs:
         run: |
          gh api graphql -f query='
             mutation {
-              reopenIssue(input: { issueId: ${{ env.ISSUE_ID }} } ){
+              reopenIssue(input: { issueId: ${{ env.ISSUE_NUM }} } ){
               issue {
                      title
                      state
