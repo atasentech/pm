@@ -46,7 +46,7 @@ jobs:
     env: 
       ISSUE_NUM: ${{ needs.Check-Branch-Name.outputs.issue_num}}
     runs-on: ubuntu-latest
-    steps:     
+    steps:
       - name: Get Issue ${{ env.ISSUE_NUM }} Project Item ID
         run: |
           gh api graphql -f query='query FindIssueID {
@@ -69,17 +69,17 @@ jobs:
       - name: Get Project Status Item ID
         run: |
           gh api graphql -f query='query{
-          organization(login: "${{ env.ORGANIZATION }}"){
+            organization(login: "${{ env.ORGANIZATION }}"){
               projectV2(number: ${{ env.PROJECT_NUMBER }}) {
-                  id
-                  fields(first:20) {
-                    nodes {
-                      ... on ProjectV2SingleSelectField {
+                id
+                fields(first:20) {
+                  nodes {
+                    ... on ProjectV2SingleSelectField {
+                      id
+                      name
+                      options {
                         id
                         name
-                        options {
-                          id
-                          name
                         }
                       }
                     }
@@ -87,21 +87,22 @@ jobs:
                 }
               }
             }' > project_data.json
-          echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
-          echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'COLUMN_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{ env.COLUMN_NAME }}") |.id' project_data.json) >> $GITHUB_ENV
+            echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
+            echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
+            echo 'COLUMN_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{ env.COLUMN_NAME }}") |.id' project_data.json) >> $GITHUB_ENV
+     
       - name: Move Issue Number ${{ env.ISSUE_NUM }} Into In Progress
         run: |
           gh api graphql -f query='
             mutation {
               updateProjectV2ItemFieldValue(
                 input: {
-                      projectId: ${{ env.PROJECT_ID }}
-                      itemId: ${{ env.ISSUE_PROJECT_ID }}
-                      fieldId: ${{ env.STATUS_FIELD_ID }}
-                      value: { 
-                          singleSelectOptionId: ${{ env.COLUMN_OPTION_ID }}
-                      }
+                  projectId: ${{ env.PROJECT_ID }}
+                  itemId: ${{ env.ISSUE_PROJECT_ID }}
+                  fieldId: ${{ env.STATUS_FIELD_ID }}
+                  value: { 
+                      singleSelectOptionId: ${{ env.COLUMN_OPTION_ID }}
+                  }
                 }
                 ) {
                 projectV2Item {
