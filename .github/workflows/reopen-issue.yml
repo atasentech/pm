@@ -42,7 +42,7 @@ jobs:
       ISSUE_NUM: ${{ needs.Check-Branch-Name.outputs.issue_num}}
     runs-on: ubuntu-latest
     steps:     
-      - name: Get Issue ${{ env.ISSUE_NUM }} Project Item ID
+      - name: Get Issue ${{ env.ISSUE_NUM }} # Project Item ID
         run: |
           gh api graphql -f query='query FindIssueID {
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
