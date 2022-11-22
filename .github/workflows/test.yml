@@ -10,11 +10,6 @@ jobs:
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
-      - name: Print PR Number
-        run: |
-          echo A comment on PR $NUMBER
-        env:
-          NUMBER: ${{ github.event.issue.number }}
 
       - name: Get PR Comment
         id: pr-comment
@@ -22,7 +17,7 @@ jobs:
           echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
         env:
           PR_COMMENT: ${{ github.event.comment.body }}
-      - name: Run if previous step outputs "deploy" word
+      - name: Run if previous step outputs "@deploy otc" word
         if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
         run: |
           echo ${{ steps.pr-comment.outputs.comment }}
