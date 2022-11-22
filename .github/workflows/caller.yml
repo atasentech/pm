@@ -11,6 +11,8 @@ jobs:
     name: PR comment
     if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
+    outputs:
+      comment: ${{ steps.pr-comment.outputs.comment }}
     steps:
       - name: Get PR Comment
         id: pr-comment
