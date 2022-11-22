@@ -1,4 +1,4 @@
-name: caller
+name: Proxy Workflow
 
 on:
   workflow_dispatch:
@@ -28,6 +28,15 @@ jobs:
   call-another-workflow: 
     needs: pr_commented
     if: contains(needs.pr_commented.outputs.comment, '@deploy otc')
-    uses: atasen19/pm/.github/workflows/test.yml@main
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: Staging
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+
+    # uses: atasen19/pm/.github/workflows/test.yml@main
 
 
