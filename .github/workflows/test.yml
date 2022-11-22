@@ -1,6 +1,5 @@
 name: BURAYA BAK
 on: 
-on:
   workflow_dispatch:
   workflow_call:
   issue_comment:
