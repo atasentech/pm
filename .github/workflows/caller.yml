@@ -1,0 +1,8 @@
+name: caller
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-another-workflow: 
+    uses: project/pm/.github/workflows/test.yml@main
