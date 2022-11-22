@@ -23,7 +23,7 @@ jobs:
         env:
           PR_COMMENT: ${{ github.event.comment.body }}
       - name: Run if previous step outputs "deploy" word
-        if: ${{ steps.branchName.outputs.comment  == "deploy" }}
+        if: contains(${{ steps.branchName.outputs.comment }}, 'deploy')
         id: conditionalstep1
         run: |
           echo "yasasin"
