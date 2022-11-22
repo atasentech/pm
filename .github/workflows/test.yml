@@ -23,7 +23,7 @@ jobs:
         env:
           PR_COMMENT: ${{ github.event.comment.body }}
       - name: Run if previous step outputs "deploy" word
-        if: contains(steps.pr-comment.outputs.comment, 'deploy')
+        if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
         run: |
           echo ${{ steps.pr-comment.outputs.comment }}
 
