@@ -25,6 +25,6 @@ jobs:
 
   call-another-workflow: 
     if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
-    uses: project/pm/.github/workflows/test.yml@main
+    uses: projects/pm/.github/workflows/test.yml@main
 
 
