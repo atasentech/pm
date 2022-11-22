@@ -22,9 +22,11 @@ jobs:
         if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
         run: |
           echo ${{ steps.pr-comment.outputs.comment }}
-
-  call-another-workflow: 
-    if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
-    uses: atasen19/pm/.github/workflows/test.yml@main
+      - name: Call another workflow
+        if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
+        uses: atasen19/pm/.github/workflows/test.yml@main
+  # call-another-workflow: 
+  #   if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
+  #   uses: atasen19/pm/.github/workflows/test.yml@main
 
 
