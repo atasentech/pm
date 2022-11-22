@@ -1,6 +1,7 @@
 name: BURAYA BAK
 on: 
   issue_comment:
+    types: [created]
 
 jobs:
   pr_commented:
