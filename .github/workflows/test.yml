@@ -2,8 +2,8 @@ name: BURAYA BAK
 on: 
   workflow_dispatch:
   workflow_call:
-  issue_comment:
-    types: [created]
+  # issue_comment:
+  #   types: [created]
 
 jobs:
   pr_commented:
