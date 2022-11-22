@@ -17,16 +17,16 @@ jobs:
           NUMBER: ${{ github.event.issue.number }}
 
       - name: Get PR Comment
-        id: branchName
+        id: pr-comment
         run: |
           echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
         env:
           PR_COMMENT: ${{ github.event.comment.body }}
       - name: Run if previous step outputs "deploy" word
-        if: contains(${{ steps.branchName.outputs.comment }}, 'deploy')
+        if: contains(${{ steps.pr-comment.outputs.comment }}, 'deploy')
         id: conditionalstep1
         run: |
-          echo "yasasin"
+          echo ${{ steps.pr-comment.outputs.comment }}
 
 
   issue_commented:
