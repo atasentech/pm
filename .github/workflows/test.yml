@@ -1,4 +1,6 @@
-on: issue_comment
+on:
+  pull_request:
+    types: [opened, closed, reopened]
 
 jobs:
   pr_commented:
