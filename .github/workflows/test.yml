@@ -15,13 +15,19 @@ jobs:
           echo A comment on PR $NUMBER
         env:
           NUMBER: ${{ github.event.issue.number }}
-          
-      - name: Get Branch name
+
+      - name: Get PR Comment
         id: branchName
         run: |
-          echo ::set-output name=branch::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
+          echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
         env:
           PR_COMMENT: ${{ github.event.comment.body }}
+      - name: Run if previous step outputs "deploy" word
+        if: ${{ steps.branchName.outputs.comment }} == "done"
+        id: conditionalstep1
+        run: |
+          echo "yasasin"
+
 
   issue_commented:
     # This job only runs for issue comments
