@@ -25,7 +25,7 @@ jobs:
 
   call-another-workflow: 
     needs: pr_commented
-    if: contains(needs.pr-commented.outputs.comment, '@deploy otc')
+    if: contains(needs.pr_commented.outputs.comment, '@deploy otc')
     uses: atasen19/pm/.github/workflows/test.yml@main
 
 
