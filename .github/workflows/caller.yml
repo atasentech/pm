@@ -1,51 +1,10 @@
-name: Proxy Workflow
-
-on:
-  issue_comment:
-    branches:
-      - '#51/test'
-    types: [created]
-
-jobs:
-  pr_commented:
-    # This job only runs for pull request comments
-    name: PR comment
-    if: ${{ github.event.issue.pull_request }}
-    runs-on: ubuntu-latest
-    outputs:
-      comment: ${{ steps.pr-comment.outputs.comment }}
-    steps:
-      - name: Get PR Comment
-        id: pr-comment
-        run: |
-          echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
-        env:
-          PR_COMMENT: ${{ github.event.comment.body }}
-      - name: Run if previous step outputs "@deploy otc" word
-        if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
-        run: |
-          echo ${{ steps.pr-comment.outputs.comment }}
-
-  call-another-workflow: 
-    needs: pr_commented
-    if: contains(needs.pr_commented.outputs.comment, '@deploy otc')
-    name: Deploy
-    runs-on: ubuntu-latest
-    environment: Staging
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-
-    # uses: atasen19/pm/.github/workflows/test.yml@main
 # name: Proxy Workflow
 
 # on:
-#   push:
+#   issue_comment:
 #     branches:
-#       - main
-#       - sandbox
+#       - '#51/test'
+#     types: [created]
 
 # jobs:
 #   pr_commented:
@@ -62,21 +21,62 @@ jobs:
 #           echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
 #         env:
 #           PR_COMMENT: ${{ github.event.comment.body }}
+#       - name: Run if previous step outputs "@deploy otc" word
+#         if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
+#         run: |
+#           echo ${{ steps.pr-comment.outputs.comment }}
 
-#   call-main-workflow: 
-#     needs: pr_commented
-#     if: contains(needs.pr_commented.outputs.comment, '@deploy main')
-#     uses: xyztek/pandora/.github/workflows/deploy_main_service.yml@develop
-  
-#   call-organizations-workflow: 
-#     needs: pr_commented
-#     if: contains(needs.pr_commented.outputs.comment, '@deploy organizations')
-#     uses: xyztek/pandora/.github/workflows/deploy_organizations_service.yml@develop
-
-#   call-otc-workflow: 
+#   call-another-workflow: 
 #     needs: pr_commented
 #     if: contains(needs.pr_commented.outputs.comment, '@deploy otc')
-#     uses: xyztek/pandora/.github/workflows/deploy_otc_service.yml@develop
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     environment: Staging
+
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v3
+
+
+#     # uses: atasen19/pm/.github/workflows/test.yml@main
+# # name: Proxy Workflow
+
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+# #       - sandbox
+
+# # jobs:
+# #   pr_commented:
+# #     # This job only runs for pull request comments
+# #     name: PR comment
+# #     if: ${{ github.event.issue.pull_request }}
+# #     runs-on: ubuntu-latest
+# #     outputs:
+# #       comment: ${{ steps.pr-comment.outputs.comment }}
+# #     steps:
+# #       - name: Get PR Comment
+# #         id: pr-comment
+# #         run: |
+# #           echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
+# #         env:
+# #           PR_COMMENT: ${{ github.event.comment.body }}
+
+# #   call-main-workflow: 
+# #     needs: pr_commented
+# #     if: contains(needs.pr_commented.outputs.comment, '@deploy main')
+# #     uses: xyztek/pandora/.github/workflows/deploy_main_service.yml@develop
+  
+# #   call-organizations-workflow: 
+# #     needs: pr_commented
+# #     if: contains(needs.pr_commented.outputs.comment, '@deploy organizations')
+# #     uses: xyztek/pandora/.github/workflows/deploy_organizations_service.yml@develop
+
+# #   call-otc-workflow: 
+# #     needs: pr_commented
+# #     if: contains(needs.pr_commented.outputs.comment, '@deploy otc')
+# #     uses: xyztek/pandora/.github/workflows/deploy_otc_service.yml@develop
 
 
 
