@@ -6,7 +6,6 @@ on:
   #   types: [created]
   #   branches:
   #     - new_deployment
-  on:
   release:
     types: [published]
 
