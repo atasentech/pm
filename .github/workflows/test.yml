@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Print Hey
         run: |
-          echo "hey"
+          echo $GITHUB_REF
 
       - name: Get PR Comment
         id: pr-comment
