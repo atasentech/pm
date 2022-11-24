@@ -2,10 +2,13 @@ name: BURAYA BAK
 on: 
   # workflow_dispatch:
   # workflow_call:
-  issue_comment:
-    types: [created]
-    branches:
-      - new_deployment
+  # issue_comment:
+  #   types: [created]
+  #   branches:
+  #     - new_deployment
+  on:
+  release:
+    types: [published]
 
 jobs:
   pr_commented:
