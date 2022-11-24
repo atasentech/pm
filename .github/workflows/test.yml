@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Hey
+        if: contains($GITHUB_REF, 'sandbox')
         run: |
           echo $GITHUB_REF
 
