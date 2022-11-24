@@ -16,9 +16,17 @@ jobs:
     # if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hey
+      - name: Get Release Tag
+        id: release-tag
         run: |
-          echo $GITHUB_REF
+          echo ::set-output name=tag::$(echo $GITHUB_REF | cut -d "[" -f2 | cut -d "]" -f1)
+        env:
+          GITHUB_REF: $GITHUB_REF
+
+      - name: Print Hey
+        if: contains(steps.release-tag.outputs.tag, 'sandbox')
+        run: |
+          echo 'OLDU SANIRIM'
 
       - name: Get PR Comment
         id: pr-comment
@@ -42,6 +50,3 @@ jobs:
           echo A comment on issue $NUMBER
         env:
           NUMBER: ${{ github.event.issue.number }}
-
-  
-
