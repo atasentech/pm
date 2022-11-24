@@ -2,21 +2,23 @@ name: BURAYA BAK
 on: 
   # workflow_dispatch:
   # workflow_call:
-  issue_comment:
-    types: [created]
-    branches:
-      - new_deployment
+  # issue_comment:
+  #   types: [created]
+  #   branches:
+  #     - new_deployment
+  release:
+    types: [published]
 
 jobs:
   pr_commented:
     # This job only runs for pull request comments
     name: PR comment
-    if: ${{ github.event.issue.pull_request }}
+    # if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - name: Print Hey
         run: |
-          echo "hey"
+          echo $GITHUB_REF
 
       - name: Get PR Comment
         id: pr-comment
@@ -40,3 +42,6 @@ jobs:
           echo A comment on issue $NUMBER
         env:
           NUMBER: ${{ github.event.issue.number }}
+
+  
+
