@@ -1,43 +1,47 @@
-# name: BURAYA BAK
-# on: 
-#   workflow_dispatch:
-#   workflow_call:
-#   # issue_comment:
-#   #   types: [created]
+name: BURAYA BAK
+on: 
+  # workflow_dispatch:
+  # workflow_call:
+  # issue_comment:
+  #   types: [created]
+  #   branches:
+  #     - new_deployment
+  release:
+    types: [published]
 
-# jobs:
-#   pr_commented:
-#     # This job only runs for pull request comments
-#     name: PR comment
-#     if: ${{ github.event.issue.pull_request }}
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Print Hey
-#         run: |
-#           echo "hey"
+jobs:
+  pr_commented:
+    # This job only runs for pull request comments
+    name: PR comment
+    # if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hey
+        run: |
+          echo $GITHUB_REF
 
-#       - name: Get PR Comment
-#         id: pr-comment
-#         run: |
-#           echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
-#         env:
-#           PR_COMMENT: ${{ github.event.comment.body }}
-#       - name: Run if previous step outputs "@deploy otc" word
-#         if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
-#         run: |
-#           echo ${{ steps.pr-comment.outputs.comment }}
+      - name: Get PR Comment
+        id: pr-comment
+        run: |
+          echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
+        env:
+          PR_COMMENT: ${{ github.event.comment.body }}
+      - name: Run if previous step outputs "@deploy otc" word
+        if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
+        run: |
+          echo ${{ steps.pr-comment.outputs.comment }}
 
 
-#   issue_commented:
-#     # This job only runs for issue comments
-#     name: Issue comment
-#     if: ${{ !github.event.issue.pull_request }}
-#     runs-on: ubuntu-latest
-#     steps:
-#       - run: |
-#           echo A comment on issue $NUMBER
-#         env:
-#           NUMBER: ${{ github.event.issue.number }}
+  issue_commented:
+    # This job only runs for issue comments
+    name: Issue comment
+    if: ${{ !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo A comment on issue $NUMBER
+        env:
+          NUMBER: ${{ github.event.issue.number }}
 
   
 
