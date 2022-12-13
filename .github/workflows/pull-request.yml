@@ -80,6 +80,7 @@ jobs:
         run: |
           echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV  
           
+        
       - name: Set Env Variables For Closed PR
         if: ${{ (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS >= 1) }}
         run: |
@@ -88,7 +89,8 @@ jobs:
       - name: Set Env Variables For Closed PR No More PRS
         if: ${{ (env.MERGED== 'false') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS < 1) }}
         run: |
-          echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV    
+          echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
+
       - name: Set Env Variables For Closed and Merged PR
         if: ${{(env.MERGED == 'true') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_BRANCHES == 0)}}
         run: |
