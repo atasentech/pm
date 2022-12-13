@@ -2,7 +2,7 @@ name: On Pull Requests
 
 on:
   pull_request:
-    types: [ready_for_review]
+    types: [ready_for_review, closed]
 
 env:
     GH_TOKEN: ${{ secrets.MY_PM_TOKEN }} ## YOUR_TOKEN is a personal access token set as an action secret for your repository
@@ -13,7 +13,6 @@ env:
 jobs:
   Check-Branch-Name:
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.draft == true
     outputs:
       issue_num: ${{ steps.step1.outputs.issue_num }}
       tracked: ${{ steps.step1.outputs.tracked }}
@@ -75,21 +74,20 @@ jobs:
             echo 'NUM_OF_BRANCHES='$(jq '.data.repository.refs.totalCount' project_data.json) >> $GITHUB_ENV
             echo 'NUM_OF_PRS='$(jq '[.data.repository.refs.nodes | .[].associatedPullRequests.totalCount] | add' project_data.json) >> $GITHUB_ENV
       
-      - name: Set Env Variables For New/Reopened PR
+      - name: Set Env Variables For New Ready For Review PR
         if: ${{ env.PR_ACTION == 'ready_for_review' }}
         run: |
           echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV  
           
-        
-      - name: Set Env Variables For Closed PR
-        if: ${{ (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS >= 1) }}
-        run: |
-          echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV    
+      # - name: Set Env Variables For Closed PR
+      #   if: ${{ (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS >= 1) }}
+      #   run: |
+      #     echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV    
     
-      - name: Set Env Variables For Closed PR No More PRS
-        if: ${{ (env.MERGED== 'false') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS < 1) }}
-        run: |
-          echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
+      # - name: Set Env Variables For Closed PR No More PRS
+      #   if: ${{ (env.MERGED== 'false') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS < 1) }}
+      #   run: |
+      #     echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
 
       - name: Set Env Variables For Closed and Merged PR
         if: ${{(env.MERGED == 'true') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_BRANCHES == 0)}}
