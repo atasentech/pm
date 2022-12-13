@@ -1,7 +1,9 @@
 name: New Branch Created 
 
 on:
-  create
+  create:
+  push:
+    
 
 env:
     GH_TOKEN: ${{ secrets.MY_PM_SECRET }} ## YOUR_TOKEN is a personal access token set as an action secret for your repository
@@ -21,7 +23,8 @@ jobs:
         id: step1
         run: |
           branch_name=`echo '${{ github.event.ref }}'`
-          num=${branch_name#*#}
+          num=${branch_name/*/}
+          echo $num
           issue_num=`echo $num | egrep -o '^[^/]+'`
           re='^[0-9]+$'
           if ! [[ $issue_num =~ $re ]] ; then
