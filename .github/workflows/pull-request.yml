@@ -76,7 +76,7 @@ jobs:
             echo 'NUM_OF_PRS='$(jq '[.data.repository.refs.nodes | .[].associatedPullRequests.totalCount] | add' project_data.json) >> $GITHUB_ENV
       
       - name: Set Env Variables For New/Reopened PR
-        if: ${{env.PR_ACTION == 'opened' || env.PR_ACTION == 'reopened' || env.PR_ACTION == 'edited'}}
+        if: ${{ env.PR_ACTION == 'ready_for_review' }}
         run: |
           echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV  
           
