@@ -21,7 +21,7 @@ jobs:
         id: step1
         run: |
           branch_name=`echo '${{ github.event.ref }}'`
-          num=${branch_name#*/*/}
+          num=${branch_name#*/}
           echo $num
           issue_num=`echo $num | egrep -o '^[^/]+'`
           re='^[0-9]+$'
