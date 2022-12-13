@@ -1,9 +1,7 @@
 name: New Branch Created 
 
 on:
-  create:   
-    branches: 
-      - 'feat/**'
+  create
 
 env:
     GH_TOKEN: ${{ secrets.MY_PM_SECRET }} ## YOUR_TOKEN is a personal access token set as an action secret for your repository
