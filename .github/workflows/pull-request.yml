@@ -21,7 +21,7 @@ jobs:
         id: step1
         run: |
           branch_name=`echo '${{ github.event.pull_request.head.ref }}'`
-          issue_num=`echo ${branch_name#*#} | egrep -o '^[^/]+'`
+          issue_num=`echo ${branch_name#*/} | egrep -o '^[^/]+'`
           re='^[0-9]+$'
           if ! [[ $issue_num =~ $re ]] ; then
             echo "::set-output name=tracked::false"
@@ -38,6 +38,7 @@ jobs:
       - name: Branch Is not Tracked
         run: |
           echo "No issue number detected. Branch ${{ github.event.pull_request.head.ref }} will not be tracked in projects.";
+
   Move-Issue-In-Project:
     runs-on: ubuntu-latest
     needs: Check-Branch-Name
@@ -73,7 +74,6 @@ jobs:
             echo 'NUM_OF_BRANCHES='$(jq '.data.repository.refs.totalCount' project_data.json) >> $GITHUB_ENV
             echo 'NUM_OF_PRS='$(jq '[.data.repository.refs.nodes | .[].associatedPullRequests.totalCount] | add' project_data.json) >> $GITHUB_ENV
       
-
       - name: Set Env Variables For New/Reopened PR
         if: ${{env.PR_ACTION == 'opened' || env.PR_ACTION == 'reopened' || env.PR_ACTION == 'edited'}}
         run: |
