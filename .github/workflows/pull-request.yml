@@ -2,7 +2,7 @@ name: On Pull Requests
 
 on:
   pull_request:
-    types: [opened, closed, reopened]
+    types: [ready_for_review]
 
 env:
     GH_TOKEN: ${{ secrets.MY_PM_TOKEN }} ## YOUR_TOKEN is a personal access token set as an action secret for your repository
