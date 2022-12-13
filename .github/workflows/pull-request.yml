@@ -13,7 +13,7 @@ env:
 jobs:
   Check-Branch-Name:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == true
+    if: github.event.pull_request.draft == false
     outputs:
       issue_num: ${{ steps.step1.outputs.issue_num }}
       tracked: ${{ steps.step1.outputs.tracked }}
