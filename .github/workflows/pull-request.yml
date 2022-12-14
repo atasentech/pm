@@ -2,7 +2,9 @@ name: On Pull Requests
 
 on:
   pull_request:
-    types: [ready_for_review, closed]
+    types: [ready_for_review, closed, review_requested]
+  pull_request_review:
+    types: [submitted]
 
 env:
     GH_TOKEN: ${{ secrets.MY_PM_TOKEN }} ## YOUR_TOKEN is a personal access token set as an action secret for your repository
@@ -83,11 +85,22 @@ jobs:
       #   if: ${{ (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS >= 1) }}
       #   run: |
       #     echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV    
-    
+      
+      # Bu issue ile ilgili başka açık PR kalmadıysa ve bu PR mergelenmediyse
       # - name: Set Env Variables For Closed PR No More PRS
       #   if: ${{ (env.MERGED== 'false') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_PRS < 1) }}
       #   run: |
       #     echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
+
+      # - name: Set Env Variables For Review Requested PR
+      #   if: ${{ env.PR_ACTION == 'review_requested' }}
+      #   run: |
+      #     echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
+
+      # - name: Set Env Variables For Approved PR
+      #   if: ${{ github.event.review.state == 'approved' }}
+      #   run: |
+      #     echo "ISSUE_PROJECT_STATUS="Approved"" >> $GITHUB_ENV  
 
       - name: Set Env Variables For Closed and Merged PR
         if: ${{(env.MERGED == 'true') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_BRANCHES == 0)}}
