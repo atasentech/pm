@@ -2,7 +2,7 @@ name: On Pull Requests
 
 on:
   pull_request:
-    types: [ready_for_review, closed]
+    types: [ready_for_review, closed, review_requested]
   pull_request_review:
     types: [submitted]
 
