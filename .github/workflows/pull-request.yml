@@ -107,6 +107,11 @@ jobs:
         run: |
           echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
 
+      - name: Set Env Variables For Review Re-Requested PR
+        if: ${{ github.event.review.state == 'review_requested' }}
+        run: |
+          echo "ISSUE_PROJECT_STATUS="In Review"" >> $GITHUB_ENV  
+
       - name: Set Env Variables For Closed and Merged PR
         if: ${{(env.MERGED == 'true') && (env.PR_ACTION == 'closed') && ( env.NUM_OF_BRANCHES == 0)}}
         run: |
