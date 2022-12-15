@@ -97,10 +97,10 @@ jobs:
       #   run: |
       #     echo "ISSUE_PROJECT_STATUS="In Progress"" >> $GITHUB_ENV  
 
-      # - name: Set Env Variables For Approved PR
-      #   if: ${{ github.event.review.state == 'approved' }}
-      #   run: |
-      #     echo "ISSUE_PROJECT_STATUS="Approved"" >> $GITHUB_ENV  
+      - name: Set Env Variables For Approved PR
+        if: ${{ github.event.review.state == 'approved' }}
+        run: |
+          echo "ISSUE_PROJECT_STATUS="Approved"" >> $GITHUB_ENV  
 
       - name: Set Env Variables For Changes Requested PR
         if: ${{ github.event.review.state == 'changes_requested' }}
@@ -132,7 +132,7 @@ jobs:
                   string=$(jq '.data.repository.issue.projectItems.nodes[0].id' project_data.json)
                   string=`echo "$string" | tr -d '"'`
                   echo 'ISSUE_PROJECT_ID='$string >> $GITHUB_ENV
-              
+
        
       - name: Get Project Status Item ID
         env:
