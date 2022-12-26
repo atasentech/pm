@@ -47,7 +47,7 @@ jobs:
     if: needs.Check-Branch-Name.outputs.tracked == 'true'
     env: 
       ISSUE_NUM: ${{ needs.Check-Branch-Name.outputs.issue_num}}
-      # GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+      GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
     steps:     
       - name: Get Issue Number
         run: |
