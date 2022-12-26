@@ -58,8 +58,8 @@ jobs:
       
       - name: Get all Branches for Issue
         id: branches
-        env:
-          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+        # env:
+          # GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='query FindBranches{
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
@@ -118,8 +118,8 @@ jobs:
           echo "ISSUE_PROJECT_STATUS="Done"" >> $GITHUB_ENV    
           
       - name: Get Issue Project Item ID 
-        env:
-          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+        # env:
+        #   GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='query FindIssueID {
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
@@ -140,8 +140,8 @@ jobs:
 
        
       - name: Get Project Status Item ID
-        env:
-          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+        # env:
+        #   GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='query{
             organization(login: "${{ env.ORGANIZATION }}"){
@@ -167,8 +167,8 @@ jobs:
           echo 'NEW_STATUS_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="${{env.ISSUE_PROJECT_STATUS}}" ) |.id' project_data.json) >> $GITHUB_ENV
           
       - name: Move Issue Number ${{ env.ISSUE_NUM }} Into ${{ env.ISSUE_PROJECT_STATUS }}
-        env:
-          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+        # env:
+        #   GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='
             mutation {
@@ -189,8 +189,8 @@ jobs:
             }'
             
       - name: Close Issue
-        env:
-          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
+        # env:
+        #   GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         if: ${{(env.NUM_OF_BRANCHES == 0) && (env.MERGED == 'true') && (env.PR_ACTION == 'closed')}}
         run: |
          gh api graphql -f query='
