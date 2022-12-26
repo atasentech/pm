@@ -47,7 +47,7 @@ jobs:
     if: needs.Check-Branch-Name.outputs.tracked == 'true'
     env: 
       ISSUE_NUM: ${{ needs.Check-Branch-Name.outputs.issue_num}}
-      GH_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
     steps:     
       - name: Get Issue Number
         run: |
@@ -59,8 +59,7 @@ jobs:
       - name: Get all Branches for Issue
         id: branches
         env:
-          # GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.MY_PM_SECRET }}
         run: |
           gh api graphql -f query='query FindBranches{
             repository(owner:"${{ env.ORGANIZATION }}", name:"${{ env.REPO }}") {
