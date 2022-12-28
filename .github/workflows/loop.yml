@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: run loop
         env:
-          REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}}, A ${{env.ECR_ORGANIZATIONS_REPOSITORY}}, B ${{env.ECR_OTC_REPOSITORY}}, C
+          REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
           DENEME: A B C
         run: |
           for x in $REPOSITORIES; do
@@ -30,6 +30,7 @@ jobs:
             if [[$x == ${{env.ECR_OTC_REPOSITORY}}]]; then
               echo C
             fi
+            echo $x 
           done
 
 
