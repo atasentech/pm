@@ -21,11 +21,11 @@ jobs:
           DENEME: A B C
         run: |
           for x in $REPOSITORIES; do
-            if [$x == pandora-main/sandbox]; then
+            if [ $x == pandora-main/sandbox ]; then
               echo A
-            elif [$x == pandora-organizations/sandbox]; then
+            elif [ $x == pandora-organizations/sandbox ]; then
               echo B
-            elif [$x == pandora-otc/sandbox]; then
+            elif [ $x == pandora-otc/sandbox ]; then
               echo C
             fi
           done
