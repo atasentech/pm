@@ -2,6 +2,12 @@ name: BURAYA BAK
 on: 
   push:
 
+env:
+  # ECR Repositories
+  ECR_MAIN_REPOSITORY: pandora-main/sandbox
+  ECR_ORGANIZATIONS_REPOSITORY: pandora-organizations/sandbox
+  ECR_OTC_REPOSITORY: pandora-otc/sandbox
+
 jobs:
   loope_test:
     # This job only runs for pull request comments
@@ -11,7 +17,7 @@ jobs:
     steps:
       - name: run loop
         env:
-          FILES: pandora-main/sandbox pandora-organizations/sandbox pandora-otc/sandbox
+          FILES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
         run: |
           for x in $FILES; do
             echo "$x"
