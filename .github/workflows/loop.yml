@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run loop
-        id: test-$x
         env:
           REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
           DENEME: A B C
