@@ -8,18 +8,31 @@ env:
   ECR_ORGANIZATIONS_REPOSITORY: pandora-organizations/sandbox
   ECR_OTC_REPOSITORY: pandora-otc/sandbox
 
+# jobs:
+#   loope_test:
+#     # This job only runs for pull request comments
+#     name: loop test
+#     # if: ${{ github.event.issue.pull_request }}
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: run loop
+#         id: test-$x
+#         env:
+#           REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
+#         run: |
+#           for x in $REPOSITORIES; do
+#             echo "$x"
+#           done
+
 jobs:
-  loope_test:
-    # This job only runs for pull request comments
-    name: loop test
-    # if: ${{ github.event.issue.pull_request }}
+  example_matrix:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+        version: [10, 12, 14]
     runs-on: ubuntu-latest
     steps:
       - name: run loop
-        id: test-$x
-        env:
-          REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
         run: |
-          for x in $REPOSITORIES; do
-            echo "$x"
-          done
+          echo ${{matrix.version}} ${{matrix.os}}
+
