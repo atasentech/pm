@@ -21,16 +21,15 @@ jobs:
           DENEME: A B C
         run: |
           for x in $REPOSITORIES; do
-            if [[$x == ${{env.ECR_MAIN_REPOSITORY}}]]; then
+            if [[$x == "pandora-main/sandbox"]]; then
               echo A
             fi
-            if [[$x == ${{env.ECR_ORGANIZATIONS_REPOSITORY}}]]; then
+            if [[$x == "pandora-organizations/sandbox"]]; then
               echo B
             fi
-            if [[$x == ${{env.ECR_OTC_REPOSITORY}}]]; then
+            if [[$x == "pandora-otc/sandbox"]]; then
               echo C
             fi
-            echo $x 
           done
 
 
