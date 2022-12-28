@@ -5,11 +5,11 @@ on:
 jobs:
   loope_test:
     # This job only runs for pull request comments
-    name: PR comment
+    name: loop test
     # if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
     steps:
       - name: run loop
         env:
           FILES: pandora-main/sandbox pandora-organizations/sandbox pandora-otc/sandbox
-        run: for f in $FILES; do [echo f]; done
+        run: for f in $FILES; echo f; done
