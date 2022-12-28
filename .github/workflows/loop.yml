@@ -12,4 +12,7 @@ jobs:
       - name: run loop
         env:
           FILES: pandora-main/sandbox pandora-organizations/sandbox pandora-otc/sandbox
-        run: for f in $FILES; echo f; done
+        run: |
+          for x in $FILES; do
+            echo "$x"
+          done
