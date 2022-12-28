@@ -1,6 +1,6 @@
 name: BURAYA BAK
 on: 
-  push
+  push:
 
 jobs:
   loope_test:
