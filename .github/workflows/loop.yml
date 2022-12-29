@@ -9,33 +9,50 @@ env:
   ECR_OTC_REPOSITORY: pandora-otc/sandbox
 
 jobs:
-  loope_test:
-    name: loop test
-    strategy:
-      matrix:
-        machine_architecture: [32, 64]
-    runs-on: ubuntu-latest
-    steps:
-      # - name: run loop
-      #   env:
-      #     REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
-      #     DENEME: A B C
-      #   run: |
-      #     for x in $REPOSITORIES; do
-      #       if [ $x == pandora-main/sandbox ]; then
-      #         echo A
-      #       elif [ $x == pandora-organizations/sandbox ]; then
-      #         echo B
-      #       elif [ $x == pandora-otc/sandbox ]; then
-      #         echo C
-      #       fi
-      #     done
-      #   shell: bash
+  # loope_test:
+  #   name: loop test
+  #   strategy:
+  #     matrix:
+  #       machine_architecture: [32, 64]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # - name: run loop
+  #     #   env:
+  #     #     REPOSITORIES: ${{env.ECR_MAIN_REPOSITORY}} ${{env.ECR_ORGANIZATIONS_REPOSITORY}} ${{env.ECR_OTC_REPOSITORY}}
+  #     #     DENEME: A B C
+  #     #   run: |
+  #     #     for x in $REPOSITORIES; do
+  #     #       if [ $x == pandora-main/sandbox ]; then
+  #     #         echo A
+  #     #       elif [ $x == pandora-organizations/sandbox ]; then
+  #     #         echo B
+  #     #       elif [ $x == pandora-otc/sandbox ]; then
+  #     #         echo C
+  #     #       fi
+  #     #     done
+  #     #   shell: bash
 
-      - name: deneme
-        run: |
-          echo ${{ fromJson('{ 32: "i386", 64: "x86_64" }')[machine_architecture] }}
-        shell: bash
+  #     - name: deneme
+  #       env:
+  #         someObject: {test:}
+  #       run: |
+  #         echo ${{ fromJson('{ 32: "i386", 64: "x86_64" }')[machine_architecture] }}
+  #       shell: bash
+
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
+    steps:
+      - run: build
         
 
 
