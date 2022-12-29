@@ -63,7 +63,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "matrix={\"${{env.ECS_ORGANIZATIONS_SERVICE}}\":\"${{env.ECS_ORGANIZATIONS_TASK_DEFINITION_FILE_PATH}}\"}" >> $GITHUB_OUTPUT
+        run: echo "matrix={\"${{env.ECS_ORGANIZATIONS_SERVICE}}\":\"${{env.ECS_ORGANIZATIONS_SERVICE}}\"}" >> $GITHUB_OUTPUT
   job2:
     needs: job1
     runs-on: ubuntu-latest
