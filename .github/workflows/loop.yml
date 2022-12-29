@@ -31,4 +31,10 @@ jobs:
           done
         shell: bash
 
+      - name: deneme
+        run: |
+          echo ${{ fromJson('{ 32: "i386", 64: "x86_64" }')[machine_architecture] }}
+        shell: bash
+        
+
 
