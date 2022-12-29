@@ -3,6 +3,24 @@ on:
   push:
  
 env:
+  # ECS Cluster
+  ECS_CLUSTER: pandora-sandbox-cluster-v2
+  
+  # Task Definitions
+  ECS_MAIN_TASK_DEFINITION: pandora-main-sandbox-task-definition
+  ECS_ORGANIZATIONS_TASK_DEFINITION: pandora-organizations-sandbox-task-definition
+  ECS_OTC_TASK_DEFINITION: pandora-otc-sandbox-task-definition
+
+  # Local Task Definition File Paths
+  ECS_MAIN_TASK_DEFINITION_FILE_PATH: ./ecs-main-task-definition.json
+  ECS_ORGANIZATIONS_TASK_DEFINITION_FILE_PATH: ./ecs-organizations-task-definition.json
+  ECS_OTC_TASK_DEFINITION_FILE_PATH: ./ecs-otc-task-definition.json
+
+  # Services Under pandora-sandbox-cluster
+  ECS_MAIN_SERVICE: pandora-main-sandbox-service
+  ECS_ORGANIZATIONS_SERVICE: pandora-organizations-sandbox-service
+  ECS_OTC_SERVICE: pandora-otc-sandbox-service
+
   # ECR Repositories
   ECR_MAIN_REPOSITORY: pandora-main/sandbox
   ECR_ORGANIZATIONS_REPOSITORY: pandora-organizations/sandbox
@@ -45,7 +63,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+        run: echo "matrix={\"include\":[{\"${{env.ECS_ORGANIZATIONS_SERVICE}}\":\"ECS_ORGANIZATIONS_TASK_DEFINITION_FILE_PATH\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
   job2:
     needs: job1
     runs-on: ubuntu-latest
