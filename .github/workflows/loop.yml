@@ -71,7 +71,7 @@ jobs:
       matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - run: |
-          echo ${{job1.outputs.matrix}}
+          echo ${{needs.job1.outputs.matrix}}
 
         
 
