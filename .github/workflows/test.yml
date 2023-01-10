@@ -30,8 +30,10 @@ jobs:
           echo 'OLDU SANIRIM'
 
       - name: Split tag name
+        env:
+          TAG: ${{ steps.release-tag.outputs.tag }}
         id: split
-        run: echo "::set-output name=fragment::${steps.release-tag.outputs.tag##*-}"
+        run: echo "::set-output name=fragment::${TAG##*-}"
 
       # - name: Get PR Comment
       #   id: pr-comment
