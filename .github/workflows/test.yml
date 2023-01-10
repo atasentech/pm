@@ -34,6 +34,9 @@ jobs:
           TAG: ${{ steps.release-tag.outputs.tag }}
         id: split
         run: echo "::set-output name=fragment::${TAG#*-}"
+      
+      - name: Print
+        run: echo ${{ steps.split.outputs.fragment}}
 
       # - name: Get PR Comment
       #   id: pr-comment
