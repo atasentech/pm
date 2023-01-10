@@ -13,8 +13,9 @@ jobs:
   release_tag:
     # This job only runs for pull request comments
     name: PR comment
-    # if: ${{ github.event.issue.pull_request }}
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release-tag.outputs.tag }}
     steps:
       - name: Get Release Tag
         id: release-tag
