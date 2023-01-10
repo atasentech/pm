@@ -10,7 +10,7 @@ on:
     types: [published]
 
 jobs:
-  pr_commented:
+  release_tag:
     # This job only runs for pull request comments
     name: PR comment
     # if: ${{ github.event.issue.pull_request }}
@@ -28,25 +28,34 @@ jobs:
         run: |
           echo 'OLDU SANIRIM'
 
-      - name: Get PR Comment
-        id: pr-comment
-        run: |
-          echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
-        env:
-          PR_COMMENT: ${{ github.event.comment.body }}
-      - name: Run if previous step outputs "@deploy otc" word
-        if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
-        run: |
-          echo ${{ steps.pr-comment.outputs.comment }}
+      # - name: Get PR Comment
+      #   id: pr-comment
+      #   run: |
+      #     echo ::set-output name=comment::$(echo $PR_COMMENT | cut -d "[" -f2 | cut -d "]" -f1)
+      #   env:
+      #     PR_COMMENT: ${{ github.event.comment.body }}
+      # - name: Run if previous step outputs "@deploy otc" word
+      #   if: contains(steps.pr-comment.outputs.comment, '@deploy otc')
+      #   run: |
+      #     echo ${{ steps.pr-comment.outputs.comment }}
 
-
-  issue_commented:
-    # This job only runs for issue comments
-    name: Issue comment
-    if: ${{ !github.event.issue.pull_request }}
+  deploy:
+    needs: release_tag
+    if: contains(needs.release_tag.outputs.tag, 'sandbox')
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo A comment on issue $NUMBER
-        env:
-          NUMBER: ${{ github.event.issue.number }}
+      - name: Print Hey
+        # if: contains(steps.release-tag.outputs.tag, 'sandbox')
+        run: |
+          echo 'OLDU SANIRIM'
+  # issue_commented:
+  #   # This job only runs for issue comments
+  #   name: Issue comment
+  #   if: ${{ !github.event.issue.pull_request }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: |
+  #         echo A comment on issue $NUMBER
+  #       env:
+  #         NUMBER: ${{ github.event.issue.number }}
