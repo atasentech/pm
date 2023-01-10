@@ -29,6 +29,10 @@ jobs:
         run: |
           echo 'OLDU SANIRIM'
 
+      - name: Split tag name
+        id: split
+        run: echo "::set-output name=fragment::${steps.release-tag.outputs.tag##*-}"
+
       # - name: Get PR Comment
       #   id: pr-comment
       #   run: |
